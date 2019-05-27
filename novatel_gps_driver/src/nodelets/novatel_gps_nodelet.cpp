@@ -162,6 +162,7 @@
 #include <swri_roscpp/subscriber.h>
 #include <cav_msgs/SystemAlert.h>
 #include <cav_msgs/DriverStatus.h>
+#include <geometry_msgs/PoseWithCovarianceStamped.h>
 
 
 namespace stats = boost::accumulators;
@@ -289,6 +290,7 @@ namespace novatel_gps_driver
 
       if (publish_imu_messages_)
       {
+        heading_pub_ = swri::advertise<geometry_msgs::PoseWithCovarianceStamped>(node, "heading_raw", 100);
         imu_pub_ = swri::advertise<sensor_msgs::Imu>(node, "imu", 100);
         novatel_imu_pub_= swri::advertise<novatel_gps_msgs::NovatelCorrectedImuData>(node, "corrimudata", 100);
         insstdev_pub_ = swri::advertise<novatel_gps_msgs::Insstdev>(node, "insstdev", 100);
@@ -597,6 +599,7 @@ namespace novatel_gps_driver
     double reconnect_delay_s_;
     bool use_binary_messages_;
 
+    ros::Publisher heading_pub_;
     ros::Publisher fix_pub_;
     ros::Publisher gps_pub_;
     ros::Publisher imu_pub_;
@@ -909,6 +912,8 @@ namespace novatel_gps_driver
           msg->header.stamp += sync_offset;
           msg->header.frame_id = imu_frame_id_;
           imu_pub_.publish(msg);
+
+          publishHeadingFromImu(msg);
         }
 
         std::vector<novatel_gps_msgs::InscovPtr> inscov_msgs;
@@ -1245,6 +1250,26 @@ namespace novatel_gps_driver
       status.add("Warnings", publish_rate_warnings_);
 
       publish_rate_warnings_ = 0;
+    }
+
+    /**
+     * @brief Helper function publishes a heading message using the data in an imu message
+     */ 
+    void publishHeadingFromImu(sensor_msgs::ImuConstPtr& imu_msg) {
+      geometry_msgs::PoseWithCovarianceStamped heading_msg;
+      heading_msg.header = imu_msg->header;
+      heading_msg.pose.pose.orientation = imu_msg->orientation;
+      heading_msg.pose.covariance[21] = imu_msg->orientation_covariance[0];
+      heading_msg.pose.covariance[22] = imu_msg->orientation_covariance[1];
+      heading_msg.pose.covariance[23] = imu_msg->orientation_covariance[2];
+      heading_msg.pose.covariance[27] = imu_msg->orientation_covariance[3];
+      heading_msg.pose.covariance[28] = imu_msg->orientation_covariance[4];
+      heading_msg.pose.covariance[29] = imu_msg->orientation_covariance[5];
+      heading_msg.pose.covariance[33] = imu_msg->orientation_covariance[6];
+      heading_msg.pose.covariance[34] = imu_msg->orientation_covariance[7];
+      heading_msg.pose.covariance[35] = imu_msg->orientation_covariance[8];
+
+      heading_pub_.publish(heading_msg);
     }
   };
 }
