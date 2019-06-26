@@ -25,7 +25,7 @@
   <arg name="imu_frame_id" default="imu" doc="The frame of the imu data" />
   
   <remap from="gnss/driver_discovery" to="driver_discovery"/>
-  <remap from="gnss/system_alert" to="system_alert">
+  <remap from="gnss/system_alert" to="system_alert"/>
   <group ns="gnss">
     <node name="novatel_gnss_imu"
           pkg="nodelet" type="nodelet"
