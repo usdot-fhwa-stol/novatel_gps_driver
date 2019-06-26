@@ -29,7 +29,7 @@
         args="standalone novatel_gps_driver/novatel_gps_nodelet" >
     <remap from="fix" to="gnss/fix"/>
     <remap from="dual_antenna_heading" to="gnss/dual_antenna_heading"/>
-    
+
     <param name="verbose" value="$(arg verbose)" />
     <param name="device" value="$(arg ip):$(arg port)" />
     <param name="port" value="$(arg port)" />
@@ -42,6 +42,7 @@
       imu_sample_rate: -1
       use_binary_messages: true
       publish_novatel_positions: true
+      publish_novatel_dual_antenna_heading: true
       publish_imu_messages: true
       publish_imu: true
       publish_novatel_velocity: true
