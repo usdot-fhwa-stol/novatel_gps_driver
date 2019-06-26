@@ -23,10 +23,12 @@
   <arg name="polling_period" default="0.05" doc="The period between gps data publishes in seconds" />
   <arg name="frame_id" default="gps" doc="The frame of the gps data" />
   <arg name="imu_frame_id" default="imu" doc="The frame of the imu data" />
-
-  <node name="novatel_gnss_imu"
-        pkg="nodelet" type="nodelet"
-        args="standalone novatel_gps_driver/novatel_gps_nodelet" >
+  
+  <group ns="gnss">
+    <node name="novatel_gnss_imu"
+          pkg="nodelet" type="nodelet"
+          args="standalone novatel_gps_driver/novatel_gps_nodelet" >
+  </group>
 
     <param name="verbose" value="$(arg verbose)" />
     <param name="device" value="$(arg ip):$(arg port)" />
