@@ -27,8 +27,8 @@
 
 namespace novatel_gps_driver {
   /**
-   * @class GPSDriverWrapper
-   * @brief An interface which defines functions to publish gps data
+   * \class GPSDriverWrapper
+   * \brief An interface which defines functions to publish gps data
    * 
    */
   class GPSDriverWrapper 
@@ -36,33 +36,42 @@ namespace novatel_gps_driver {
     public:
 
       /**
-       * @brief Virtual destructor to ensure delete safety for pointers to implementing classes
+       * \brief Virtual destructor to ensure delete safety for pointers to implementing classes
        * 
        */
       virtual ~GPSDriverWrapper() {};
 
       /**
-       * @brief Publish a fused gps fix message
+       * \brief Publish a fused gps fix message
        * 
-       * @param msg The message to publish
+       * \param msg The message to publish
        * 
        */
       virtual void publishFixFused(const gps_common::GPSFix& msg) = 0;
 
       /**
-       * @brief Publish a driver status message
+       * \brief Publish a driver status message
        * 
-       * @param msg The message to publish
+       * \param msg The message to publish
        * 
        */
       virtual void publishStatus(const cav_msgs::DriverStatus& msg) = 0;
 
       /**
-       * @brief Publish a system alert message
+       * \brief Publish a system alert message
        * 
-       * @param msg The message to publish
+       * \param msg The message to publish
        * 
        */
       virtual void publishAlert(const cav_msgs::SystemAlert& msg) = 0;
+
+
+      /**
+       * \brief Returns the fully qualified name of the process
+       * 
+       * \return The process name
+       * 
+       */
+      virtual std::string getQualifiedName() = 0;
   };
 };

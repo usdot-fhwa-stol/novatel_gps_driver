@@ -24,7 +24,9 @@ namespace novatel_gps_driver
   NovatelGPSNodeletWrapperWorker::NovatelGPSNodeletWrapperWorker(WorkerConfig config, boost::shared_ptr<GPSDriverWrapper> publisher) : 
     config_(config), publisher_(publisher)
   {
-
+    status_.imu = true;
+    status_.gnss = true;
+    status_.name = publisher_.getQualifiedName();
   }
 
   void NovatelGPSNodeletWrapperWorker::imuCallback(const sensor_msgs::ImuConstPtr& msg) {

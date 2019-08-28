@@ -41,6 +41,7 @@ class MockPub : public GPSDriverWrapper
     int shutdownCount = 0;
     cav_msgs::DriverStatus status;
     gps_common::GPSFix fix_msg;
+    std::string name_;
 
     void publishFixFused(const gps_common::GPSFix& msg) override {
       fix_msg = msg;
@@ -54,6 +55,14 @@ class MockPub : public GPSDriverWrapper
 
     void publishAlert(const cav_msgs::SystemAlert& msg) override {
       alertCount++;
+    }
+    
+    std::string getQualifiedName() override {
+        return name_;
+    }
+
+    void setName(const std::string& name) {
+      name_ = name;
     }
 };
 
@@ -76,13 +85,16 @@ TEST(NovatelGPSWrapperWorkerTest, TestTimerCallback)
 
   boost::shared_ptr<MockPub> pub;
   pub.reset(new MockPub());
-
+  pub->setName("MockPub");
   NovatelGPSNodeletWrapperWorker worker(config, pub);
   
   // No data received
   ros::TimerEvent event;
   worker.statusTimerCallback(event);
   ASSERT_EQ(cav_msgs::DriverStatus::OFF, pub->status.status);
+  ASSERT_EQ(pub->getQualifiedName(), pub->status.name);
+  ASSERT_EQ(true, pub->status.imu);
+  ASSERT_EQ(true, pub->status.gnss);
 
   // Imu message
   ros::Time startTime(1.0);

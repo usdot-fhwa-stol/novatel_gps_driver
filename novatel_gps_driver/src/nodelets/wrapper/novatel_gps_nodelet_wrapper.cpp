@@ -51,6 +51,7 @@ namespace novatel_gps_driver
       ros::Publisher heading_raw_pub_;
       ros::Publisher status_pub_;
       ros::Publisher alert_pub_;
+      std::string name_;
 
       //// Overrides ////
 
@@ -64,6 +65,14 @@ namespace novatel_gps_driver
 
       void publishAlert(const cav_msgs::SystemAlert& msg) override {
         alert_pub_.publish(msg);
+      }
+
+      std::string getQualifiedName() override {
+        return name_;
+      }
+
+      void setName(const std::string& name) {
+        name_ = name;
       }
   };
 
@@ -80,6 +89,7 @@ namespace novatel_gps_driver
         ros::CARMANodeHandle pnh(getPrivateNodeHandle());
 
         publisher_.reset(new APIPublisher());
+        publisher_->setName(ros::this_node::getName());
 
         publisher_->fix_fused_pub_ = nh.advertise<gps_common::GPSFix>("gnss_fix_fused", 10);
         publisher_->status_pub_ = nh.advertise<cav_msgs::DriverStatus>("driver_discovery", 10);

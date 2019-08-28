@@ -22,7 +22,6 @@
   <arg name="frame_id" default="gps" doc="The frame of the gps data" />
   <arg name="imu_frame_id" default="imu" doc="The frame of the imu data" />
   <arg name="use_binary_messages" default="true" doc="True if recieving binary data from hardware" />
-
   <node name="nodelet_manager" pkg="nodelet" type="nodelet" args="manager"/>
 
   <node name="novatel_gnss_imu"
@@ -39,7 +38,7 @@
 
     <rosparam command="load" file="$(find novatel_gps_driver)/config/parameters.yaml" />
   </node>
-  
+
   <node name="novatel_gps_nodelet_wrapper"
       pkg="nodelet" type="nodelet"
       args="load novatel_gps_driver/novatel_gps_nodelet_wrapper nodelet_manager" >
