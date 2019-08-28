@@ -26,7 +26,7 @@ namespace novatel_gps_driver
   {
     status_.imu = true;
     status_.gnss = true;
-    status_.name = publisher_.getQualifiedName();
+    status_.name = publisher_->getQualifiedName();
   }
 
   void NovatelGPSNodeletWrapperWorker::imuCallback(const sensor_msgs::ImuConstPtr& msg) {
