@@ -89,7 +89,7 @@ namespace novatel_gps_driver
         ros::CARMANodeHandle pnh(getPrivateNodeHandle());
 
         publisher_.reset(new APIPublisher());
-        publisher_->setName(ros::this_node::getName());
+        publisher_->setName(getName());
 
         publisher_->fix_fused_pub_ = nh.advertise<gps_common::GPSFix>("gnss_fix_fused", 10);
         publisher_->status_pub_ = nh.advertise<cav_msgs::DriverStatus>("driver_discovery", 10);
