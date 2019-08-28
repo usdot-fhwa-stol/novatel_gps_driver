@@ -28,6 +28,7 @@
         pkg="nodelet" type="nodelet"
         args="load novatel_gps_driver/novatel_gps_nodelet nodelet_manager" >
 
+    <remap from="imu" to="imu_raw"/>
     <param name="verbose" value="$(arg verbose)" />
     <param name="device" value="$(arg ip):$(arg port)" />
     <param name="port" value="$(arg port)" />
