@@ -55,9 +55,10 @@ jobs:
           name: Build Driver
           command: |
             source ${INIT_ENV}
+            echo "Current dir is: $PWD"
             export ROS_PARALLEL_JOBS='-j3 -l3' # Try to reduce memory consumption on build
             #build-wrapper-linux-x86-64 --out-dir /opt/carma/bw-output bash build.sh
-            build-wrapper-linux-x86-64 --out-dir /opt/carma/bw-output bash make_with_coverage.bash -m -e /opt/carma/ -o ./coverage_reports/gcov
+            build-wrapper-linux-x86-64 --out-dir /opt/carma/bw-output bash make_with_coverage.bash -m -e /opt/carma/ -o /opt/carma/coverage_reports/gcov
       - run:
           name: Run C++ Tests
           command: |
