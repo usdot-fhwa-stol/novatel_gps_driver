@@ -68,6 +68,7 @@ jobs:
             bash make_with_coverage.bash -t -e /opt/carma/ -o ./coverage_reports/gcov
             find /opt/carma -type d -name coverage_reports 2>/dev/null
             find /opt/carma -type f -name coverage.xml 2>/dev/null
+            find /opt/carma -type d -name build 2>/dev/null
             find /opt/carma -type d -name gcov 2>/dev/null
             find /opt/carma -type f -name *.gc* 2>/dev/null
       # Run SonarCloud analysis
