@@ -57,20 +57,13 @@ jobs:
             source ${INIT_ENV}
             echo "Current dir is: $PWD"
             export ROS_PARALLEL_JOBS='-j3 -l3' # Try to reduce memory consumption on build
-            #build-wrapper-linux-x86-64 --out-dir /opt/carma/bw-output bash build.sh
-            build-wrapper-linux-x86-64 --out-dir /opt/carma/bw-output bash make_with_coverage.bash -m -e /opt/carma/ -o /opt/carma/coverage_reports/gcov
+            build-wrapper-linux-x86-64 --out-dir /opt/carma/bw-output bash make_with_coverage.bash -m -e /opt/carma/ -o ./coverage_reports/gcov
       - run:
           name: Run C++ Tests
           command: |
             source ${INIT_ENV}
             export ROS_PARALLEL_JOBS='-j3 -l3' # Try to reduce memory consumption on build
-            #./src/CARMANovatelGpsDriver/coverage.sh
             bash make_with_coverage.bash -t -e /opt/carma/ -o ./coverage_reports/gcov
-            find /opt/carma -type d -name coverage_reports 2>/dev/null
-            find /opt/carma -type f -name coverage.xml 2>/dev/null
-            find /opt/carma -type d -name build 2>/dev/null
-            find /opt/carma -type d -name gcov 2>/dev/null
-            find /opt/carma -type f -name *.gc* 2>/dev/null
       # Run SonarCloud analysis
       # PR Branchs and number extracted from Circle variables and github api
       # Circle CI seems to make a change to the base branch, so we must fetch --force to ensure correct git file change stats
