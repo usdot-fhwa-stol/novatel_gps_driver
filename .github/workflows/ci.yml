@@ -5,18 +5,35 @@ on:
     branches:
       - 'develop'
 
+env:
+  TERM: xterm # use xterm to get full display output from build
+  INIT_ENV: /home/carma/.base-image/init-env.sh
+
 jobs:
   build:
-    runs-on: ubuntu-latest
+    runs-on: usdotfhwastoldev/carma-base:develop
     steps:
-      -
-        name: Checkout
+      - run: mkdir -p src/CARMANovatelGpsDriver
+
+      - name: Checkout
         uses: actions/checkout@v3
-      -
-        name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v2
-      -
-        name: Build and export
-        uses: docker/build-push-action@v3
         with:
-          context: .
+          path: "src/CARMANovatelGpsDriver"
+
+      - name: Pull deps
+        run: |
+          ln -s "$GITHUB_WORKSPACE" /opt/carma
+          source ${INIT_ENV}
+          ./src/CARMANovatelGpsDriver/docker/checkout.bash -r ${PWD}
+
+      - name: Build Driver
+        run: |
+          source ${INIT_ENV}
+          export ROS_PARALLEL_JOBS='-j3 -l3' # Try to reduce memory consumption on build
+          build-wrapper-linux-x86-64 --out-dir /opt/carma/bw-output bash make_with_coverage.bash -m -e /opt/carma/ -o ./coverage_reports/gcov
+
+      - name: Run C++ Tests
+        run: |
+          source ${INIT_ENV}
+          export ROS_PARALLEL_JOBS='-j3 -l3' # Try to reduce memory consumption on build
+          bash make_with_coverage.bash -t -e /opt/carma/ -o ./coverage_reports/gcov
