@@ -13,7 +13,8 @@ jobs:
   build:
     runs-on: usdotfhwastoldev/carma-base:develop
     steps:
-      - run: mkdir -p src/CARMANovatelGpsDriver
+      - name: Create src dir
+        run: mkdir -p src/CARMANovatelGpsDriver
 
       - name: Checkout
         uses: actions/checkout@v3
