@@ -5,6 +5,10 @@ on:
     branches:
       - "develop"
 
+env:
+  INIT_ENV: /home/carma/.base-image/init-env.sh
+  TERM: xterm # use xterm to get full display output from build
+
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -27,7 +31,8 @@ jobs:
 
       - name: Pull deps
         run: |
-          ls /home/
+          ls /home/carma/
+          ls /home/carma/.base-image/
           source ${INIT_ENV}
           ./opt/carma/src/CARMANovatelGpsDriver/docker/checkout.bash -r ${PWD}
 
