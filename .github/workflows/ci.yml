@@ -17,8 +17,7 @@ jobs:
     steps:
       - name: Create src dir
         run: |
-          cd /opt/carma
-          mkdir -p src/CARMANovatelGpsDriver
+          mkdir -p /opt/carma/src
 
       - name: Checkout
         uses: actions/checkout@v3
