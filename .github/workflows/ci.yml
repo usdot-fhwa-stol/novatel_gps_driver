@@ -3,38 +3,48 @@ name: ci
 on:
   push:
     branches:
-      - 'develop'
-
-env:
-  TERM: xterm # use xterm to get full display output from build
-  INIT_ENV: /home/carma/.base-image/init-env.sh
+      - "develop"
 
 jobs:
   build:
-    runs-on: usdotfhwastoldev/carma-base:develop
+    runs-on: ubuntu-latest
+    container:
+      image: usdotfhwastoldev/carma-base:develop
+      env:
+        INIT_ENV: /home/carma/.base-image/init-env.sh
+        TERM: xterm # use xterm to get full display output from build
+      ports:
+        - 80
+      volumes:
+        - /opt/carma:/opt/carma
+      options: --cpus 1
     steps:
       - name: Create src dir
-        run: mkdir -p src/CARMANovatelGpsDriver
+        run: |
+          cd /opt/carma
+          mkdir -p src/CARMANovatelGpsDriver
 
       - name: Checkout
         uses: actions/checkout@v3
         with:
-          path: "src/CARMANovatelGpsDriver"
+          path: "/opt/carma/src/CARMANovatelGpsDriver"
 
       - name: Pull deps
         run: |
-          ln -s "$GITHUB_WORKSPACE" /opt/carma
           source ${INIT_ENV}
+          cd /opt/carma
           ./src/CARMANovatelGpsDriver/docker/checkout.bash -r ${PWD}
 
       - name: Build Driver
         run: |
           source ${INIT_ENV}
           export ROS_PARALLEL_JOBS='-j3 -l3' # Try to reduce memory consumption on build
+          cd /opt/carma
           build-wrapper-linux-x86-64 --out-dir /opt/carma/bw-output bash make_with_coverage.bash -m -e /opt/carma/ -o ./coverage_reports/gcov
 
       - name: Run C++ Tests
         run: |
           source ${INIT_ENV}
           export ROS_PARALLEL_JOBS='-j3 -l3' # Try to reduce memory consumption on build
+          cd /opt/carma
           bash make_with_coverage.bash -t -e /opt/carma/ -o ./coverage_reports/gcov
