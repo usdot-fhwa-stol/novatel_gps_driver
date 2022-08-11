@@ -22,7 +22,8 @@ jobs:
       - name: Create src dir
         run: |
           mkdir -p /opt/carma/src
-          apt -y install git
+          apt -y install 
+          chsh -s /bin/bash
 
       - name: Checkout
         run: |
@@ -33,19 +34,19 @@ jobs:
         run: |
           ls /home/carma/
           ls /home/carma/.base-image/
-          . /home/carma/.base-image/init-env.sh
+          source /home/carma/.base-image/init-env.sh
           ./opt/carma/src/CARMANovatelGpsDriver/docker/checkout.bash -r ${PWD}
 
       - name: Build Driver
         run: |
-          . /home/carma/.base-image/init-env.sh
+          source /home/carma/.base-image/init-env.sh
           export ROS_PARALLEL_JOBS='-j3 -l3' # Try to reduce memory consumption on build
           cd /opt/carma
           build-wrapper-linux-x86-64 --out-dir /opt/carma/bw-output bash make_with_coverage.bash -m -e /opt/carma/ -o ./coverage_reports/gcov
 
       - name: Run C++ Tests
         run: |
-          . /home/carma/.base-image/init-env.sh
+          source /home/carma/.base-image/init-env.sh
           export ROS_PARALLEL_JOBS='-j3 -l3' # Try to reduce memory consumption on build
           cd /opt/carma
           bash make_with_coverage.bash -t -e /opt/carma/ -o ./coverage_reports/gcov
