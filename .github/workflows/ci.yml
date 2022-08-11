@@ -41,4 +41,5 @@ jobs:
         run: |
           source "$INIT_ENV"
           export ROS_PARALLEL_JOBS='-j3 -l3' # Try to reduce memory consumption on build
-          bash /opt/carma/make_with_coverage.bash -t -e /opt/carma/ -o /opt/carma/coverage_reports/gcov
+          cd /opt/carma
+          bash make_with_coverage.bash -t -e /opt/carma/ -o /opt/carma/coverage_reports/gcov
