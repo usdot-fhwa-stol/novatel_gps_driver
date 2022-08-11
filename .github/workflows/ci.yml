@@ -22,7 +22,7 @@ jobs:
       - name: Create src dir
         run: |
           mkdir -p /opt/carma/src
-          apt -y install 
+          apt -y install git
           ln -s /bin/bash /bin/sh
 
       - name: Checkout
