@@ -5,30 +5,24 @@ on:
     branches:
       - "develop"
 
-env:
-  INIT_ENV: /home/carma/.base-image/init-env.sh
-  TERM: xterm # use xterm to get full display output from build
-
 jobs:
   build:
     runs-on: ubuntu-latest
     container:
       image: usdotfhwastoldev/carma-base:develop
       env:
-        INIT_ENV: /home/carma/.base-image/init-env.sh
+        INIT_ENV: "/home/carma/.base-image/init-env.sh"
         TERM: xterm # use xterm to get full display output from build
       options: --user root
     steps:
+      - name: Symlink bash to sh
+        run: ln -sf /bin/bash /bin/sh # otherwise source command does not work in scripts
+
       - name: Create src dir
-        run: |
-          mkdir -p /opt/carma/src
-          apt -y install git tree
-          ln -sf /bin/bash /bin/sh # otherwise source command does not work
+        run: mkdir -p /opt/carma/src
 
       - name: Checkout
-        run: |
-          echo "git clone $GITHUB_SERVER_URL/$GITHUB_REPOSITORY -b $GITHUB_REF_NAME"
-          git clone $GITHUB_SERVER_URL/$GITHUB_REPOSITORY -b $GITHUB_REF_NAME /opt/carma/src/CARMANovatelGpsDriver
+        run: git clone --depth 1 $GITHUB_SERVER_URL/$GITHUB_REPOSITORY -b $GITHUB_REF_NAME /opt/carma/src/CARMANovatelGpsDriver
 
       - name: Pull deps
         run: |
