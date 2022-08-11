@@ -18,7 +18,6 @@ jobs:
       - name: Symlink bash to sh
         run: |
           ln -sf /bin/bash /bin/sh # otherwise source command does not work in scripts
-          echo "INIT_ENV is $INIT_ENV"
 
       - name: Create src dir
         run: mkdir -p /opt/carma/src
@@ -35,10 +34,10 @@ jobs:
         run: |
           source /home/carma/.base-image/init-env.sh
           export ROS_PARALLEL_JOBS='-j3 -l3' # Try to reduce memory consumption on build
-          build-wrapper-linux-x86-64 --out-dir /opt/carma/bw-output bash /opt/carma/make_with_coverage.bash -m -e /opt/carma/ -o /opt/carma/coverage_reports/gcov
+          build-wrapper-linux-x86-64 --out-dir /opt/carma/bw-output bash make_with_coverage.bash -m -e /opt/carma/ -o /opt/carma/coverage_reports/gcov
 
       - name: Run C++ Tests
         run: |
-          source /home/carma/.base-image/init-env.sh
+          source "$INIT_ENV"
           export ROS_PARALLEL_JOBS='-j3 -l3' # Try to reduce memory consumption on build
           bash /opt/carma/make_with_coverage.bash -t -e /opt/carma/ -o /opt/carma/coverage_reports/gcov
