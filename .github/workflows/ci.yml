@@ -23,12 +23,12 @@ jobs:
         run: |
           mkdir -p /opt/carma/src
           apt -y install git
-          ln -sf /bin/bash /bin/sh
+          ln -sf /bin/bash /bin/sh # otherwise source command does not work
 
       - name: Checkout
         run: |
           echo "git clone $GITHUB_SERVER_URL/$GITHUB_REPOSITORY -b $GITHUB_REF_NAME"
-          git clone $GITHUB_SERVER_URL/$GITHUB_REPOSITORY -b $GITHUB_REF_NAME
+          git clone $GITHUB_SERVER_URL/$GITHUB_REPOSITORY -b $GITHUB_REF_NAME /opt/carma/src/CARMANovatelGpsDriver
 
       - name: Pull deps
         run: |
