@@ -23,7 +23,7 @@ jobs:
         run: |
           mkdir -p /opt/carma/src
           apt -y install git
-          ln -s /bin/bash /bin/sh
+          ln -sf /bin/bash /bin/sh
 
       - name: Checkout
         run: |
