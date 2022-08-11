@@ -21,6 +21,7 @@ jobs:
     steps:
       - name: Create src dir
         run: |
+          sudo chown -R $USER:$USER /opt/carma
           cd /opt/carma
           mkdir -p src/CARMANovatelGpsDriver
 
