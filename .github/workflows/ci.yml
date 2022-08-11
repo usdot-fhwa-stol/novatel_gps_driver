@@ -17,11 +17,10 @@ jobs:
         - 80
       volumes:
         - /opt/carma:/opt/carma
-      options: --cpus 1
+      options: --user carma
     steps:
       - name: Create src dir
         run: |
-          sudo chown -R $USER:$USER /opt/carma
           cd /opt/carma
           mkdir -p src/CARMANovatelGpsDriver
 
