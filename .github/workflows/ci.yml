@@ -13,11 +13,7 @@ jobs:
       env:
         INIT_ENV: /home/carma/.base-image/init-env.sh
         TERM: xterm # use xterm to get full display output from build
-      ports:
-        - 80
-      volumes:
-        - /opt/carma:/opt/carma
-      options: --user carma
+      options: --user root
     steps:
       - name: Create src dir
         run: |
