@@ -34,7 +34,7 @@ jobs:
         run: |
           tree /opt/carma
           source /home/carma/.base-image/init-env.sh
-          ./opt/carma/src/CARMANovatelGpsDriver/docker/checkout.bash -r ${PWD}
+          bash /opt/carma/src/CARMANovatelGpsDriver/docker/checkout.bash -r ${PWD}
 
       - name: Build Driver
         run: |
