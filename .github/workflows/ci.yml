@@ -32,22 +32,17 @@ jobs:
 
       - name: Pull deps
         run: |
-          tree /
           source /home/carma/.base-image/init-env.sh
-          bash -x /opt/carma/src/CARMANovatelGpsDriver/docker/checkout.bash -r ${PWD}
-          git clone https://github.com/usdot-fhwa-stol/carma-msgs.git /opt/carma/src/CARMAMsgs --branch develop
-          git clone https://github.com/usdot-fhwa-stol/carma-utils.git /opt/carma/src/CARMAUtils --branch develop
+          bash -x /opt/carma/src/CARMANovatelGpsDriver/docker/checkout.bash -r /opt/carma
 
       - name: Build Driver
         run: |
           source /home/carma/.base-image/init-env.sh
           export ROS_PARALLEL_JOBS='-j3 -l3' # Try to reduce memory consumption on build
-          cd /opt/carma
           build-wrapper-linux-x86-64 --out-dir /opt/carma/bw-output bash make_with_coverage.bash -m -e /opt/carma/ -o ./coverage_reports/gcov
 
       - name: Run C++ Tests
         run: |
           source /home/carma/.base-image/init-env.sh
           export ROS_PARALLEL_JOBS='-j3 -l3' # Try to reduce memory consumption on build
-          cd /opt/carma
-          bash make_with_coverage.bash -t -e /opt/carma/ -o ./coverage_reports/gcov
+          bash /opt/carma/make_with_coverage.bash -t -e /opt/carma/ -o /opt/carma/coverage_reports/gcov
