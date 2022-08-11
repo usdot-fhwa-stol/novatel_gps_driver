@@ -14,7 +14,7 @@ jobs:
         INIT_ENV: /home/carma/.base-image/init-env.sh
         TERM: xterm # use xterm to get full display output from build
       volumes:
-        - "${GITHUB_WORKSPACE}:/opt/carma"
+        - "/opt/carma:/opt/carma"
       options: --user root
     steps:
       - name: Create src dir
@@ -24,7 +24,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v3
         with:
-          path: "src/CARMANovatelGpsDriver"
+          path: "/opt/carma/src/CARMANovatelGpsDriver"
 
       - name: Pull deps
         run: |
