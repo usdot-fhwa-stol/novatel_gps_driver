@@ -32,7 +32,7 @@ jobs:
 
       - name: Pull deps
         run: |
-          tree /opt/carma
+          tree /
           source /home/carma/.base-image/init-env.sh
           bash /opt/carma/src/CARMANovatelGpsDriver/docker/checkout.bash -r ${PWD}
 
