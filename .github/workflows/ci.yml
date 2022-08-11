@@ -23,7 +23,7 @@ jobs:
         run: |
           mkdir -p /opt/carma/src
           apt -y install 
-          chsh -s /bin/bash
+          ln -s /bin/bash /bin/sh
 
       - name: Checkout
         run: |
