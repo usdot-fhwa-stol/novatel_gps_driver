@@ -28,7 +28,8 @@ jobs:
       - name: Pull deps
         run: |
           source /home/carma/.base-image/init-env.sh
-          bash -x /opt/carma/src/CARMANovatelGpsDriver/docker/checkout.bash -r /opt/carma
+          git clone https://github.com/usdot-fhwa-stol/carma-msgs.git /opt/carma/src/CARMAMsgs --branch develop
+          git clone https://github.com/usdot-fhwa-stol/carma-utils.git /opt/carma/src/CARMAUtils --branch develop
 
       - name: Build Driver
         run: |
