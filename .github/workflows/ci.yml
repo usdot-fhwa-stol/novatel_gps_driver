@@ -24,8 +24,8 @@ jobs:
 
       - name: Checkout
         run: |
-          echo "git clone $GITHUB_SERVER_URL/$GITHUB_REPOSITORY -b GITHUB_HEAD_REF"
-          git clone $GITHUB_SERVER_URL/$GITHUB_REPOSITORY -b GITHUB_HEAD_REF
+          echo "git clone $GITHUB_SERVER_URL/$GITHUB_REPOSITORY -b $GITHUB_REF_NAME"
+          git clone $GITHUB_SERVER_URL/$GITHUB_REPOSITORY -b $GITHUB_REF_NAME
 
       - name: Pull deps
         run: |
