@@ -1,6 +1,8 @@
-name: ci
+name: CI Build
 
 on:
+  pull_request:
+    types: [opened, reopened]
   push:
     branches:
       - "develop"
@@ -28,7 +30,7 @@ jobs:
       - name: Pull deps
         run: |
           source /home/carma/.base-image/init-env.sh
-          bash -x /opt/carma/src/CARMANovatelGpsDriver/docker/checkout.bash -r /opt/carma
+          bash /opt/carma/src/CARMANovatelGpsDriver/docker/checkout.bash -r /opt/carma
 
       - name: Build Driver
         run: |
